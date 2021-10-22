@@ -1,11 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-// import {
-//   useQuery,
-//   gql,
-// } from '@apollo/client';
-// import LinearProgress from '@material-ui/core/LinearProgress';
 // import { Typography } from '@material-ui/core';
 // import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -15,9 +10,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core//FormControl';
 import Select from '@material-ui/core/Select';
 import Chip from '../../components/Chip';
-import { selectMetrics } from './metricsSlice';
+import { selectMetrics, toggleMetric } from './metricsSlice';
 
 const Metrics = () => {
+  const dispatch = useDispatch();
   const metrics = useSelector(selectMetrics);
   const names = metrics.map(metric => metric.metric);
 
@@ -41,27 +37,15 @@ const Metrics = () => {
   //   };
   // }
 
-  // const { loading, error, data } = useQuery(metricsQuery, {
-  //   variables: {},
-  // });
-
-  // if (loading) return <LinearProgress />;
-  // if (error) return <Typography color="error">{error}</Typography>;
-  // if (!data) return <Chip label="Metrics not found" />;
-
-  // console.log(data);
-
   // const theme = useTheme();
   const [metricName, setMetricName] = React.useState([]);
 
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
+    const { target: { value } } = event;
     setMetricName(
-      // On autofill we get a the stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+    dispatch(toggleMetric(value));
   };
 
   return (

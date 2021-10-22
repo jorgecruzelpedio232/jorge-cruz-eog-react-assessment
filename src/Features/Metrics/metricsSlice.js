@@ -38,6 +38,16 @@ export const metricsSlice = createSlice({
   name: 'metrics',
   initialState,
   reducers: {
+    toggleMetric: (state, action) => {
+      state.metrics = state.metrics.map(metric => {
+        if (action.payload.includes(metric.metric)) {
+          metric.selected = true;
+        } else {
+          metric.selected = false;
+        }
+        return metric;
+      });
+    },
   },
 
   extraReducers: (builder) => {
@@ -52,7 +62,7 @@ export const metricsSlice = createSlice({
   },
 });
 
-export const { increment } = metricsSlice.actions;
+export const { toggleMetric } = metricsSlice.actions;
 
 export const selectMetrics = (state) => state.metrics.metrics;
 

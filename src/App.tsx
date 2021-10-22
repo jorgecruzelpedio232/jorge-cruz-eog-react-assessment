@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import Metrics from './Features/Metrics/Metrics';
+import Charts from './Features/Charts/Charts';
 import { getMetrics } from './Features/Metrics/metricsSlice';
 
 const theme = createTheme({
@@ -35,6 +36,7 @@ const App = () => {
       <Wrapper>
         <Header />
         <Metrics />
+        <Charts />
         <ToastContainer />
       </Wrapper>
     </MuiThemeProvider>
