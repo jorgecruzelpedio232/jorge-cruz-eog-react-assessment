@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -6,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import Metrics from './Features/Metrics/Metrics';
+import { getMetrics } from './Features/Metrics/metricsSlice';
 
 const theme = createTheme({
   palette: {
@@ -21,15 +23,22 @@ const theme = createTheme({
   },
 });
 
-const App = () => (
-  <MuiThemeProvider theme={theme}>
-    <CssBaseline />
-    <Wrapper>
-      <Header />
-      <Metrics />
-      <ToastContainer />
-    </Wrapper>
-  </MuiThemeProvider>
-);
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getMetrics());
+  }, []);
+
+  return (
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <Wrapper>
+        <Header />
+        <Metrics />
+        <ToastContainer />
+      </Wrapper>
+    </MuiThemeProvider>
+  );
+};
 
 export default App;

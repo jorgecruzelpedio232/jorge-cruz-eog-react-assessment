@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // import {
 //   useQuery,
@@ -15,14 +15,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core//FormControl';
 import Select from '@material-ui/core/Select';
 import Chip from '../../components/Chip';
-import { selectMetrics, getMetrics } from './metricsSlice';
+import { selectMetrics } from './metricsSlice';
 
 const Metrics = () => {
   const metrics = useSelector(selectMetrics);
   const names = metrics.map(metric => metric.metric);
-  const dispatch = useDispatch();
-
-  dispatch(getMetrics());
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
