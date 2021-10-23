@@ -8,32 +8,20 @@ import {
 
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Typography } from '@material-ui/core';
-import { selectMetrics } from '../Metrics/metricsSlice';
+import { selectMetrics, selectHeartBeat } from '../Metrics/metricsSlice';
 
 import Chip from '../../components/Chip';
 import Chart from '../Chart/Chart';
 
 const Charts = () => {
   const metrics = useSelector(selectMetrics);
-  // console.log('xmmxmxmxmxmxmxmxmxmxmxmxm', metrics);
+  const heartBeat = useSelector(selectHeartBeat);
 
-  // const before = new Date('09/09/2021 00:30:00').getTime();
-  // const after = new Date('09/09/2021 00:00:00').getTime();
+  const after = heartBeat - 1000 * 60 * 30;
+  const before = heartBeat;
 
-  // const timeQuery = gql`
-  //   query heartBeat{
-  //     heartBeat
-  //   }
-  // `;
-  // const timeData = useQuery(timeQuery);
-  // console.log('-=-=-=-=-=-=-=-=-=-=-=-=->', timeData);
-
-  // if (timeData.loading) return <LinearProgress />;
-  // if (timeData.error) return <Typography color="error">{error}</Typography>;
-  // if (timeData.data !== undefined) {
-  const after = 1634942247702;
-  const before = after + 50000;
-  // }
+  console.log('------------------>', before);
+  console.log('------------------>', after);
 
   // Constructing the query input
   let input = '[';
@@ -45,8 +33,6 @@ const Charts = () => {
     });
   }
   input += ']';
-
-  console.log('uiuiuiuiuiuiuiuiui', input);
 
   const query = gql`
     query getMultipleMeasurements {
@@ -75,7 +61,7 @@ const Charts = () => {
 
   const { subscribeToMore, ...result } = useQuery(query);
 
-  console.log('afafafafafafafafafafaf', result.data);
+  // console.log('afafafafafafafafafafaf', result.data);
 
   subscribeToMore({
     document: subscription,
@@ -102,7 +88,7 @@ const Charts = () => {
 
   const chartData = [];
 
-  console.log('-=-=-=-=--=-=-=-=-=-=-=-=->', data);
+  // console.log('-=-=-=-=--=-=-=-=-=-=-=-=->', data);
 
   // Getting the time for the chart
   data.getMultipleMeasurements[0].measurements.forEach(metric => {

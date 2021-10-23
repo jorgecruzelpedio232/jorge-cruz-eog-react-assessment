@@ -8,7 +8,7 @@ import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import Metrics from './Features/Metrics/Metrics';
 import Charts from './Features/Charts/Charts';
-import { getMetrics } from './Features/Metrics/metricsSlice';
+import { getMetrics, getHeartBeat } from './Features/Metrics/metricsSlice';
 
 const theme = createTheme({
   palette: {
@@ -28,6 +28,7 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMetrics());
+    dispatch(getHeartBeat());
   }, []);
 
   return (

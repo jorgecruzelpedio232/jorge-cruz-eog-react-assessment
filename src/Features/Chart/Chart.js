@@ -25,17 +25,17 @@ export default class Chart extends PureComponent {
           <Tooltip />
           <Legend />
           {data[0].casingPressure !== undefined
-            && <Line type="monotone" dataKey="casingPressure" stroke="#DC143C" />}
+            && <Line type="monotone" dataKey="casingPressure" dot={false} stroke="#DC143C" />}
           {data[0].injValveOpen !== undefined
-            && <Line type="monotone" dataKey="injValveOpen" stroke="#D2691E" />}
+            && <Line type="monotone" dataKey="injValveOpen" dot={false} stroke="#3352FD" />}
           {data[0].tubingPressure !== undefined
-            && <Line type="monotone" dataKey="tubingPressure" stroke="#8B008B" />}
+            && <Line type="monotone" dataKey="tubingPressure" dot={false} stroke="#8B008B" />}
           {data[0].flareTemp !== undefined
-            && <Line type="monotone" dataKey="flareTemp" stroke="#FF8C00" />}
+            && <Line type="monotone" dataKey="flareTemp" dot={false} stroke="#FF8C00" />}
           {data[0].oilTemp !== undefined
-            && <Line type="monotone" dataKey="oilTemp" stroke="#00BFFF" />}
+            && <Line type="monotone" dataKey="oilTemp" dot={false} stroke="#00BFFF" />}
           {data[0].waterTemp !== undefined
-            && <Line type="monotone" dataKey="waterTemp" stroke="#008000" />}
+            && <Line type="monotone" dataKey="waterTemp" dot={false} stroke="#008000" />}
         </LineChart>
       </ResponsiveContainer>
     );

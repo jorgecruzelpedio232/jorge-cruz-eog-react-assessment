@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const initialState = {
   metrics: [],
   status: 'idle',
+  heartBeat: null,
 };
 
 const fetchMetrics = async () => {
@@ -26,11 +27,36 @@ const fetchMetrics = async () => {
   return metrics;
 };
 
+const fetchHeartBeat = async () => {
+  const res = await fetch('https://react.eogresources.com/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        query getHeartBeat {
+          heartBeat
+        }
+      `,
+    }),
+  });
+  const data = await res.json();
+
+  return data.data.heartBeat;
+};
+
 export const getMetrics = createAsyncThunk(
-  'metrics/fetchMetrics',
+  'metrics/getMetrics',
   async () => {
     const metrics = await fetchMetrics();
     return metrics;
+  },
+);
+
+export const getHeartBeat = createAsyncThunk(
+  'metrics/getHeartBeat',
+  async () => {
+    const heartBeat = await fetchHeartBeat();
+    return heartBeat;
   },
 );
 
@@ -58,6 +84,13 @@ export const metricsSlice = createSlice({
       .addCase(getMetrics.fulfilled, (state, action) => {
         state.status = 'idle';
         state.metrics = action.payload;
+      })
+      .addCase(getHeartBeat.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getHeartBeat.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.heartBeat = action.payload;
       });
   },
 });
@@ -65,5 +98,6 @@ export const metricsSlice = createSlice({
 export const { toggleMetric } = metricsSlice.actions;
 
 export const selectMetrics = (state) => state.metrics.metrics;
+export const selectHeartBeat = (state) => state.metrics.heartBeat;
 
 export default metricsSlice.reducer;
