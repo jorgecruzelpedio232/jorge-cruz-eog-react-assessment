@@ -22,17 +22,17 @@ const Chart = ({ data }) => (
       <Tooltip />
       <Legend />
       {data[0].casingPressure !== undefined
-        && <Line type="monotone" dataKey="casingPressure" dot={false} stroke="#DC143C" />}
+        && <Line type="monotone" dataKey="casingPressure" dot={false} isAnimationActive={false} stroke="#DC143C" />}
       {data[0].injValveOpen !== undefined
-        && <Line type="monotone" dataKey="injValveOpen" dot={false} stroke="#3352FD" />}
+        && <Line type="monotone" dataKey="injValveOpen" dot={false} isAnimationActive={false} stroke="#3352FD" />}
       {data[0].tubingPressure !== undefined
-        && <Line type="monotone" dataKey="tubingPressure" dot={false} stroke="#8B008B" />}
+        && <Line type="monotone" dataKey="tubingPressure" dot={false} isAnimationActive={false} stroke="#8B008B" />}
       {data[0].flareTemp !== undefined
-        && <Line type="monotone" dataKey="flareTemp" dot={false} stroke="#FF8C00" />}
+        && <Line type="monotone" dataKey="flareTemp" dot={false} isAnimationActive={false} stroke="#FF8C00" />}
       {data[0].oilTemp !== undefined
-        && <Line type="monotone" dataKey="oilTemp" dot={false} stroke="#00BFFF" />}
+        && <Line type="monotone" dataKey="oilTemp" dot={false} isAnimationActive={false} stroke="#00BFFF" />}
       {data[0].waterTemp !== undefined
-        && <Line type="monotone" dataKey="waterTemp" dot={false} stroke="#008000" />}
+        && <Line type="monotone" dataKey="waterTemp" dot={false} isAnimationActive={false} stroke="#008000" />}
     </LineChart>
   </ResponsiveContainer>
 );

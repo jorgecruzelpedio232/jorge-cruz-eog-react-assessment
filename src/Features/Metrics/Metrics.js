@@ -11,10 +11,12 @@ import FormControl from '@material-ui/core//FormControl';
 import Select from '@material-ui/core/Select';
 import Chip from '../../components/Chip';
 import { selectMetrics, toggleMetric } from './metricsSlice';
+import { selectLastMeasurements } from '../Charts/ChartsSlice';
 
 const Metrics = () => {
   const dispatch = useDispatch();
   const metrics = useSelector(selectMetrics);
+  const lastMeasurements = useSelector(selectLastMeasurements);
   const names = metrics.map(metric => metric.metric);
 
   const ITEM_HEIGHT = 48;
@@ -62,7 +64,7 @@ const Metrics = () => {
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={`${value}-------`} />
+                <Chip key={value} label={`${value} - ${lastMeasurements[value]}`} />
               ))}
             </Box>
           )}

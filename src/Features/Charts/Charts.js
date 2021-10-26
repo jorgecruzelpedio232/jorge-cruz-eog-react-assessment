@@ -1,14 +1,23 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Typography } from '@material-ui/core';
 import { selectMetrics, selectHeartBeat } from '../Metrics/metricsSlice';
+import {
+  setLastCasingPressure,
+  setLastInjValveOpen,
+  setLastTubingPressure,
+  setLastFlareTemp,
+  setLastOilTemp,
+  setLastWaterTemp,
+} from './ChartsSlice';
 import Chip from '../../components/Chip';
 import Chart from '../Chart/Chart';
 import { MEASUREMENTS_QUERY, MEASUREMENTS_SUBSCRIPTION } from './ChartsQueries';
 
 const Charts = () => {
+  const dispatch = useDispatch();
   const metrics = useSelector(selectMetrics);
   const heartBeat = useSelector(selectHeartBeat);
 
@@ -43,8 +52,32 @@ const Charts = () => {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         if (prev.getMultipleMeasurements !== undefined) {
-          const newData = JSON.parse(JSON.stringify(prev));
+          // Setting up the last measurements
+          switch (subscriptionData.data.newMeasurement.metric) {
+            case 'casingPressure':
+              dispatch(setLastCasingPressure(subscriptionData.data.newMeasurement.value));
+              break;
+            case 'injValveOpen':
+              dispatch(setLastInjValveOpen(subscriptionData.data.newMeasurement.value));
+              break;
+            case 'tubingPressure':
+              dispatch(setLastTubingPressure(subscriptionData.data.newMeasurement.value));
+              break;
+            case 'flareTemp':
+              dispatch(setLastFlareTemp(subscriptionData.data.newMeasurement.value));
+              break;
+            case 'oilTemp':
+              dispatch(setLastOilTemp(subscriptionData.data.newMeasurement.value));
+              break;
+            case 'waterTemp':
+              dispatch(setLastWaterTemp(subscriptionData.data.newMeasurement.value));
+              break;
+            default:
+              break;
+          }
 
+          // Combining the previous data with subscription data
+          const newData = JSON.parse(JSON.stringify(prev));
           newData.getMultipleMeasurements.map(measurement => {
             if (measurement.metric === subscriptionData.data.newMeasurement.metric) {
               measurement.measurements.push(subscriptionData.data.newMeasurement);
