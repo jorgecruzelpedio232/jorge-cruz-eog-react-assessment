@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -17,26 +17,30 @@ const Charts = () => {
   const metrics = useSelector(selectMetrics);
   const heartBeat = useSelector(selectHeartBeat);
 
+  // Getting the last 30 minutes of data
   const after = heartBeat - 1000 * 60 * 30;
   const before = heartBeat;
 
-  console.log('------------------>', before);
-  console.log('------------------>', after);
+  // console.log('------------------>', before);
+  // console.log('------------------>', after);
 
   // Constructing the query input
-  let input = '[';
+  const input = [];
   if (metrics.length > 0) {
     metrics.forEach(metric => {
       if (metric.selected === true) {
-        input += `{ metricName: "${metric.metric}", after: ${after}, before: ${before} }`;
+        input.push({
+          metricName: metric.metric,
+          after,
+          before,
+        });
       }
     });
   }
-  input += ']';
 
   const query = gql`
-    query getMultipleMeasurements {
-      getMultipleMeasurements(input: ${input}){
+    query getMultipleMeasurements($input: [MeasurementQuery]) {
+      getMultipleMeasurements(input: $input){
         metric
         measurements{
           metric
@@ -59,26 +63,37 @@ const Charts = () => {
       }
   `;
 
-  const { subscribeToMore, ...result } = useQuery(query);
-
-  // console.log('afafafafafafafafafafaf', result.data);
-
-  subscribeToMore({
-    document: subscription,
-    variables: {},
-    // updateQuery: (prev, { subscriptionData }) => {
-    //   console.log('------------>', prev);
-    //   console.log('============>', subscriptionData);
-
-    //   if (!subscriptionData.data) return prev;
-    //   const newFeedItem = subscriptionData.data.commentAdded;
-    //   return Object.assign({}, prev, {
-    //     post: {
-    //       comments: [newFeedItem, ...prev.post.comments],
-    //     },
-    //   });
-    // },
+  const { subscribeToMore, ...result } = useQuery(query, {
+    variables: {
+      input,
+    },
   });
+
+  useEffect(() => {
+    // console.log('-=-=-=-=-=-=-=-=-=-=-=-> USEEFECT');
+    const unsubscribe = subscribeToMore({
+      document: subscription,
+      variables: {},
+      updateQuery: (prev, { subscriptionData }) => {
+        // console.log('ususususususususususususu> ', subscriptionData.data.newMeasurement.metric);
+        if (!subscriptionData.data) return prev;
+        if (prev.getMultipleMeasurements !== undefined) {
+          const newData = JSON.parse(JSON.stringify(prev));
+
+          newData.getMultipleMeasurements.map(measurement => {
+            if (measurement.metric === subscriptionData.data.newMeasurement.metric) {
+              measurement.measurements.push(subscriptionData.data.newMeasurement);
+            }
+            return measurement;
+          });
+          return newData;
+        }
+        return prev;
+      },
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const { loading, error, data } = result;
 
@@ -87,8 +102,6 @@ const Charts = () => {
   if (data.getMultipleMeasurements.length === 0) return <Chip label="Please select a metric" />;
 
   const chartData = [];
-
-  // console.log('-=-=-=-=--=-=-=-=-=-=-=-=->', data);
 
   // Getting the time for the chart
   data.getMultipleMeasurements[0].measurements.forEach(metric => {
@@ -105,12 +118,10 @@ const Charts = () => {
     });
   });
 
-  // console.log('....................>', chartData);
-
   return (
     <>
       <div>CHARTS</div>
-      <Chart data={chartData} />
+      <Chart data={chartData} sub={data} />
     </>
   );
 };
