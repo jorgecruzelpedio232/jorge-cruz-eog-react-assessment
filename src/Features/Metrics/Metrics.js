@@ -1,8 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-// import { Typography } from '@material-ui/core';
-// import { useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -30,16 +28,6 @@ const Metrics = () => {
     },
   };
 
-  // function getStyles(name, metricName, theme) {
-  //   return {
-  //     fontWeight:
-  //       metricName.indexOf(name) === -1
-  //         ? theme.typography.fontWeightRegular
-  //         : theme.typography.fontWeightMedium,
-  //   };
-  // }
-
-  // const theme = useTheme();
   const [metricName, setMetricName] = React.useState([]);
 
   const handleChange = (event) => {
@@ -75,7 +63,6 @@ const Metrics = () => {
             <MenuItem
               key={name}
               value={name}
-              // style={getStyles(name, metricName, theme)}
             >
               {name}
             </MenuItem>
