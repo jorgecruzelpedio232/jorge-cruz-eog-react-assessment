@@ -22,7 +22,6 @@ const Chart = ({ data }) => (
       {data[0].injValveOpen !== undefined
         && (
           <YAxis
-            allowDataOverflow
             label={{ value: '%', position: 'bottom' }}
             type="number"
             yAxisId="1"
@@ -32,7 +31,6 @@ const Chart = ({ data }) => (
       { (data[0].casingPressure !== undefined || data[0].tubingPressure !== undefined)
         && (
           <YAxis
-            allowDataOverflow
             label={{ value: 'PSI', position: 'bottom' }}
             type="number"
             yAxisId="2"
@@ -43,7 +41,6 @@ const Chart = ({ data }) => (
         || data[0].waterTemp !== undefined)
         && (
           <YAxis
-            allowDataOverflow
             label={{ value: 'F', position: 'bottom' }}
             type="number"
             yAxisId="3"
