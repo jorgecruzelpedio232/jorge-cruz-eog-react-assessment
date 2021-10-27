@@ -60,11 +60,12 @@ const Metrics = () => {
           multiple
           value={metricName}
           onChange={handleChange}
+          style={{ minWidth: '185px' }}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={`${value} - ${lastMeasurements[value]}`} />
+                <Chip key={value} label={`${value}: ${lastMeasurements[value]}`} style={{ minWidth: '185px' }} />
               ))}
             </Box>
           )}
